@@ -255,4 +255,79 @@
     }];
 }
 
+#pragma mark - 数据库机制
+
+// 不同的用户，使用不同的数据库
+
+- (IBAction)zhangSann {
+    [self setDefaultRealmForUserName:@"zhangsan"];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    Stu *zhangsan = [[Stu alloc] initWithValue:@{@"num":@123, @"name":@"zhangsan"}];
+    [realm transactionWithBlock:^{
+        [realm addObject:zhangsan];
+    }];
+}
+
+- (IBAction)liSi {
+    [self setDefaultRealmForUserName:@"lisi"];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    Stu *lisi = [[Stu alloc] initWithValue:@{@"num":@123, @"name":@"lisi"}];
+    [realm transactionWithBlock:^{
+        [realm addObject:lisi];
+    }];
+}
+
+- (IBAction)onlyRead {
+    [self setDefaultRealmForUserName:@"zhangsan"];
+    
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    // 将这个配置应用到默认的 Realm 数据库当中
+    config.readOnly = YES;
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+    
+    // reason: 'Can't perform transactions on read-only Realms.'
+//    RLMRealm *realm = [RLMRealm defaultRealm];
+//    Stu *zhangsan = [[Stu alloc] initWithValue:@{@"num":@123, @"name":@"lisi"}];
+//    [realm transactionWithBlock:^{
+//        [realm addObject:zhangsan];
+//    }];
+    
+    RLMResults *res = [Stu allObjects];
+    for (Stu *stu in res) {
+        NSLog(@"%@", stu);
+    }
+}
+
+- (IBAction)userDelete {
+    [self setDefaultRealmForUserName:@"zhangsan"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    NSArray<NSURL *> *realmFileURLs = @[config.fileURL,
+                                        [config.fileURL URLByAppendingPathExtension:@"lock"],
+                                        [config.fileURL URLByAppendingPathExtension:@"log_a"],
+                                        [config.fileURL URLByAppendingPathExtension:@"log_b"],
+                                        [config.fileURL URLByAppendingPathExtension:@"note"],
+                                        [config.fileURL URLByAppendingPathExtension:@"management"]
+                                        ];
+    for (NSURL *URL in realmFileURLs) {
+        NSError *error = nil;
+        [fileManager removeItemAtURL:URL error:&error];
+        if (error) {
+            // handle error
+        }
+    }
+}
+
+- (void)setDefaultRealmForUserName:(NSString *)username
+{
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    // 使用默认的目录，但是使用用户名来替换默认的文件名
+    config.fileURL = [[[config.fileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:username] URLByAppendingPathExtension:@"realm"];
+    // 将这个配置应用到默认的 Realm 数据库中
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+}
+
 @end
