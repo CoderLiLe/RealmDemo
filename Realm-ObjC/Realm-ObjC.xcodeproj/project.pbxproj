@@ -19,6 +19,7 @@
 		243B595C216C423F00CBFA28 /* Stu.m in Sources */ = {isa = PBXBuildFile; fileRef = 243B595B216C423F00CBFA28 /* Stu.m */; };
 		243B595E216C6B5900CBFA28 /* a.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 243B595D216C6B5900CBFA28 /* a.jpeg */; };
 		243B5961216C784900CBFA28 /* DataType.m in Sources */ = {isa = PBXBuildFile; fileRef = 243B5960216C784900CBFA28 /* DataType.m */; };
+		243B5964216C8E5400CBFA28 /* DataMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 243B5963216C8E5400CBFA28 /* DataMigration.m */; };
 		24BB8F9E2160BED3005324E4 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BB8F9D2160BED3005324E4 /* Person.m */; };
 		24BB8FA12160C387005324E4 /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = 24BB8FA02160C387005324E4 /* Dog.m */; };
 		3F711A2EC761462AF9F037A2 /* libPods-Realm-ObjCTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 222258C1E6DA86AF098DC2D8 /* libPods-Realm-ObjCTests.a */; };
@@ -67,6 +68,8 @@
 		243B595D216C6B5900CBFA28 /* a.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = a.jpeg; sourceTree = "<group>"; };
 		243B595F216C784900CBFA28 /* DataType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataType.h; sourceTree = "<group>"; };
 		243B5960216C784900CBFA28 /* DataType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataType.m; sourceTree = "<group>"; };
+		243B5962216C8E5400CBFA28 /* DataMigration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataMigration.h; sourceTree = "<group>"; };
+		243B5963216C8E5400CBFA28 /* DataMigration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataMigration.m; sourceTree = "<group>"; };
 		24BB8F9C2160BED3005324E4 /* Person.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
 		24BB8F9D2160BED3005324E4 /* Person.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
 		24BB8F9F2160C387005324E4 /* Dog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 				24BB8F9D2160BED3005324E4 /* Person.m */,
 				243B595F216C784900CBFA28 /* DataType.h */,
 				243B5960216C784900CBFA28 /* DataType.m */,
+				243B5962216C8E5400CBFA28 /* DataMigration.h */,
+				243B5963216C8E5400CBFA28 /* DataMigration.m */,
 				243B595D216C6B5900CBFA28 /* a.jpeg */,
 				24017ED12160796F00F592B3 /* Main.storyboard */,
 				24017ED42160796F00F592B3 /* Assets.xcassets */,
@@ -371,6 +376,7 @@
 				24BB8F9E2160BED3005324E4 /* Person.m in Sources */,
 				24BB8FA12160C387005324E4 /* Dog.m in Sources */,
 				24017EDB2160796F00F592B3 /* main.m in Sources */,
+				243B5964216C8E5400CBFA28 /* DataMigration.m in Sources */,
 				24017ECD2160796F00F592B3 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

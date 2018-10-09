@@ -10,6 +10,7 @@
 #import "Person.h"
 #import "Stu.h"
 #import "DataType.h"
+#import "DataMigration.h"
 
 @interface ViewController ()
 
@@ -22,20 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // 升级数据库
-    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    config.schemaVersion = 4;
-    [config setMigrationBlock:^(RLMMigration * _Nonnull migration, uint64_t oldSchemaVersion) {
-        if (oldSchemaVersion < 4) {
-            NSLog(@"数据库结构自动更新了");
-            static int i = 0;
-            [migration enumerateObjects:@"Stu" block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
-                newObject[@"num"] = @(i++);
-            }];
-        }
-    }];
-
-    [RLMRealmConfiguration setDefaultConfiguration:config];
+    [self databaseMigration];
     
     RLMRealm *realm = [RLMRealm defaultRealm];
     self.token = [realm addNotificationBlock:^(RLMNotification  _Nonnull notification, RLMRealm * _Nonnull realm) {
@@ -79,6 +67,15 @@
             stu.name = [NSString stringWithFormat:@"%d", arc4random() % 100];
             [realm addObject:stu];
         }
+    }];
+    
+    DataMigration *dataMigration = [[DataMigration alloc] initWithValue:@{@"a": @1, @"b":@2, @"c":@3, @"sum": @0}];
+    [realm beginWriteTransaction];
+    [realm addObject:dataMigration];
+    [realm commitWriteTransaction];
+    
+    [realm transactionWithBlock:^{
+        [DataMigration createInRealm:realm withValue:@{@"a": @10, @"b":@20, @"c":@30, @"sum": @0}];
     }];
 }
 
@@ -328,6 +325,30 @@
     config.fileURL = [[[config.fileURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:username] URLByAppendingPathExtension:@"realm"];
     // 将这个配置应用到默认的 Realm 数据库中
     [RLMRealmConfiguration setDefaultConfiguration:config];
+}
+
+- (void)databaseMigration {
+    // 迁移数据结构、升级数据库
+    
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    // 1、升级一个版本
+    int newVersion = 2;
+    config.schemaVersion = newVersion;
+    // 2、设置迁移block
+    [config setMigrationBlock:^(RLMMigration * _Nonnull migration, uint64_t oldSchemaVersion) {
+        if (oldSchemaVersion < newVersion) {
+            NSLog(@"数据结构会自动迁移");
+            [migration renamePropertyForClass:DataMigration.className oldName:@"a" newName:@"aa"];
+            
+            [migration enumerateObjects:DataMigration.className block:^(RLMObject * _Nullable oldObject, RLMObject * _Nullable newObject) {
+                newObject[@"sum"] = @([oldObject[@"a"] integerValue] + [oldObject[@"b"] integerValue] + [oldObject[@"c"] integerValue]);
+            }];
+        }
+    }];
+    // 3、重新设置默认配置
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+    // 4、立即生效
+    [RLMRealm defaultRealm];
 }
 
 @end
