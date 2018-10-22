@@ -1,0 +1,22 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+
+target 'Realm-Swift' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Realm-Swift
+  # 2018年10月22日集成RealmSwift，发现还是2.x版本Swift的代码，故先不集成
+  # pod 'RealmSwift'
+
+  target 'Realm-SwiftTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'Realm-SwiftUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
